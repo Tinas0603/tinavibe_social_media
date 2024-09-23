@@ -113,10 +113,6 @@ class _RegisterState extends State<Register> {
                         minimumSize: MaterialStateProperty.all(
                           const Size.fromHeight(40),
                         ),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.black),
                       ),
                       child: Text(controller.registerLoading.value
                           ? "Đang xử lý.."

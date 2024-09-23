@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tinavibe/controllers/auth_controller.dart';
 import 'package:flutter_tinavibe/widgets/auth_input.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:get/get.dart';
@@ -17,11 +18,11 @@ class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController(text: "");
   final TextEditingController passwordController =
       TextEditingController(text: "");
-
+  final AuthController controller = Get.put(AuthController());
   void submit() => {
         if (_form.currentState!.validate())
           {
-            print("All good"),
+            controller.login(emailController.text, passwordController.text),
           }
       };
   @override
@@ -78,8 +79,6 @@ class _LoginState extends State<Login> {
                       minimumSize: MaterialStateProperty.all(
                         const Size.fromHeight(40),
                       ),
-                      backgroundColor: MaterialStateProperty.all(Colors.white),
-                      foregroundColor: MaterialStateProperty.all(Colors.black),
                     ),
                     child: const Text("Tiếp tục"),
                   ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_tinavibe/controllers/auth_controller.dart';
 import 'package:flutter_tinavibe/controllers/profile_controller.dart';
 import 'package:flutter_tinavibe/routes/route_names.dart';
 import 'package:flutter_tinavibe/services/supabase_service.dart';

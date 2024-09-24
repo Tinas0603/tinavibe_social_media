@@ -10,20 +10,22 @@ class NavigationService extends GetxService {
   var currentIndex = 0.obs;
   var previousIndex = 0.obs;
 
-  // all pages
   List<Widget> pages() {
     return [
       const HomePage(),
       const Search(),
-      const AddPost(),
+      AddPost(),
       const Notifications(),
       const Profile(),
     ];
   }
 
-  // update indev
   void updateIndex(int index) {
     previousIndex.value = currentIndex.value;
     currentIndex.value = index;
+  }
+
+  void backToPreviousPage() {
+    currentIndex.value = previousIndex.value;
   }
 }

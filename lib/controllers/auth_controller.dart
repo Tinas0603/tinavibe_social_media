@@ -2,7 +2,7 @@ import 'package:flutter_tinavibe/routes/route_names.dart';
 import 'package:flutter_tinavibe/services/storage_service.dart';
 import 'package:flutter_tinavibe/services/supabase_service.dart';
 import 'package:flutter_tinavibe/utils/helper.dart';
-import 'package:flutter_tinavibe/utils/storage_keys.dart';
+import 'package:flutter_tinavibe/utils/storage/storage_keys.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_tinavibe/utils/env.dart';
+import 'package:flutter_tinavibe/widgets/confirm_dialog.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -44,4 +45,15 @@ Future<File> compressImage(File file, String targetPath) async {
 // Lấy url của s3
 String getS3Url(String path) {
   return "${Env.supabaseUrl}/storage/v1/object/public/$path";
+}
+
+// * Hộp thoại xác thực
+void confirmBox(String title, String text, VoidCallback callback) {
+  Get.dialog(
+    ConfirmDialog(
+      title: title,
+      text: text,
+      callback: callback,
+    ),
+  );
 }

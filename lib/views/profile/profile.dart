@@ -27,7 +27,9 @@ class _ProfileState extends State<Profile> {
           title: const Icon(Icons.language),
           centerTitle: false,
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.sort))
+            IconButton(
+                onPressed: () => Get.toNamed(RouteNames.setting),
+                icon: const Icon(Icons.sort))
           ]),
       body: DefaultTabController(
         length: 2,
@@ -59,9 +61,17 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 SizedBox(
                                   width: context.width * 0.65,
-                                  child: Text(supabaseService.currentUser.value
-                                          ?.userMetadata?["description"] ??
-                                      "Thêm tiểu sử."),
+                                  child: Text(
+                                    (supabaseService.currentUser.value
+                                                        ?.userMetadata?[
+                                                    "description"] ??
+                                                "")
+                                            .trim()
+                                            .isEmpty
+                                        ? "Thêm tiểu sử"
+                                        : supabaseService.currentUser.value
+                                            ?.userMetadata?["description"]!,
+                                  ),
                                 )
                               ],
                             ),

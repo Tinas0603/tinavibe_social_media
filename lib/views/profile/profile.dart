@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_tinavibe/controllers/auth_controller.dart';
+import 'package:flutter_tinavibe/controllers/profile_controller.dart';
+import 'package:flutter_tinavibe/routes/route_names.dart';
+import 'package:flutter_tinavibe/services/supabase_service.dart';
 import 'package:flutter_tinavibe/utils/styles/button_styles.dart';
+import 'package:flutter_tinavibe/widgets/image_circle.dart';
 import 'package:get/get.dart';
 
 class Profile extends StatefulWidget {
@@ -12,6 +16,10 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final ProfileController controller = Get.put(ProfileController());
+
+  final SupabaseService supabaseService = Get.find<SupabaseService>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,28 +45,35 @@ class _ProfileState extends State<Profile> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "TinaVibe",
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
+                          Obx(
+                            () => Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  supabaseService
+                                      .currentUser.value!.userMetadata?["name"],
+                                  style: const TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: context.width * 0.65,
-                                child: const Text(
-                                    "TinaVibe - Your vibe, your connection."),
-                              )
-                            ],
+                                SizedBox(
+                                  width: context.width * 0.65,
+                                  child: Text(supabaseService.currentUser.value
+                                          ?.userMetadata?["description"] ??
+                                      "Thêm tiểu sử."),
+                                )
+                              ],
+                            ),
                           ),
-                          CircleAvatar(
-                            radius: 40,
-                            backgroundImage:
-                                AssetImage("assets/images/avatar.png"),
-                          ),
+                          Obx(
+                            () => ImageCircle(
+                              file: controller.image.value,
+                              url: supabaseService
+                                  .currentUser.value?.userMetadata?["image"],
+                              radius: 40,
+                            ),
+                          )
                         ],
                       ),
                       const SizedBox(
@@ -68,7 +83,9 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.toNamed(RouteNames.editProfile);
+                              },
                               style: customOutlineStyle(),
                               child: const Text("Sửa hồ sơ"),
                             ),

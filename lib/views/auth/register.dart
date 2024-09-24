@@ -31,6 +31,15 @@ class _RegisterState extends State<Register> {
           }
       };
   @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+    cpasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -63,7 +72,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 20),
                   AuthInput(
                     label: "Họ và tên",
-                    hintText: "Nhập tên của bạn.",
+                    hintText: "",
                     controller: nameController,
                     validatorCallback: ValidationBuilder()
                         .required()
@@ -74,7 +83,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 20),
                   AuthInput(
                     label: "Email",
-                    hintText: "Nhập email của bạn.",
+                    hintText: "",
                     controller: emailController,
                     validatorCallback:
                         ValidationBuilder().required().email().build(),
@@ -82,7 +91,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 20),
                   AuthInput(
                     label: "Mật khẩu",
-                    hintText: "Nhập mật khẩu của bạn.",
+                    hintText: "",
                     isPasswordField: true,
                     controller: passwordController,
                     validatorCallback: ValidationBuilder()
@@ -94,7 +103,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 20),
                   AuthInput(
                       label: "Xác nhận mật khẩu",
-                      hintText: "Nhập mật khẩu của bạn.",
+                      hintText: "",
                       isPasswordField: true,
                       controller: cpasswordController,
                       validatorCallback: (arg) {

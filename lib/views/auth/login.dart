@@ -25,6 +25,14 @@ class _LoginState extends State<Login> {
             controller.login(emailController.text, passwordController.text),
           }
       };
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,14 +66,14 @@ class _LoginState extends State<Login> {
                   const SizedBox(height: 20),
                   AuthInput(
                     label: "Email",
-                    hintText: "Nhập email của bạn.",
+                    hintText: "",
                     controller: emailController,
                     validatorCallback: ValidationBuilder().email().build(),
                   ),
                   const SizedBox(height: 20),
                   AuthInput(
                     label: "Mật khẩu",
-                    hintText: "Nhập mật khẩu của bạn.",
+                    hintText: "",
                     isPasswordField: true,
                     controller: passwordController,
                     validatorCallback: ValidationBuilder().required().build(),

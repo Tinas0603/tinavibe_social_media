@@ -27,5 +27,10 @@ class Routes {
       page: () => Setting(),
       transition: Transition.rightToLeft,
     ),
+    // GetPage(
+    //   name: RouteNames.showPost,
+    //   page: () => const showPost(),
+    //   transition: Transition.leftToRightWithFade,
+    // ),
   ];
 }

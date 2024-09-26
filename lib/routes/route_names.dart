@@ -4,4 +4,5 @@ class RouteNames {
   static String register = "/register";
   static String editProfile = "/editProfile";
   static String setting = "/setting";
+  static const String showPost = "/showPost";
 }

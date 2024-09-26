@@ -17,7 +17,7 @@ class ReplyController extends GetxController {
       //thêm thông báo
       await SupabaseService.client.from("notifications").insert({
         "user_id": userId,
-        "notification": "Commented on your post",
+        "notification": "Đã phản hồi về bài viết của bạn.",
         "to_user_id": postUserId,
         "post_id": postId,
       });

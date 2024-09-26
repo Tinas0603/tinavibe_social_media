@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tinavibe/models/post_model.dart';
+import 'package:flutter_tinavibe/routes/route_names.dart';
+import 'package:get/get.dart';
 
 class PostBottomBar extends StatelessWidget {
   final PostModel post;
@@ -16,7 +18,9 @@ class PostBottomBar extends StatelessWidget {
               icon: const Icon(Icons.favorite_outline),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(RouteNames.addReply, arguments: post);
+              },
               icon: const Icon(Icons.chat_bubble_outline),
             ),
             IconButton(

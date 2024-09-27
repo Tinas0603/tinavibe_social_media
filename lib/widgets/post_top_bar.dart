@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_tinavibe/models/post_model.dart';
+import 'package:flutter_tinavibe/utils/helper.dart';
 
 class PostTopBar extends StatelessWidget {
   final PostModel post;
@@ -15,11 +16,13 @@ class PostTopBar extends StatelessWidget {
           post.user!.metadata!.name!,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        const Row(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("9 hours ago"),
-            SizedBox(width: 10),
-            Icon(Icons.more_horiz),
+            Text(formatDateFromNow(post.createdAt!)),
+            const SizedBox(width: 10),
+            const Icon(Icons.more_horiz),
           ],
         ),
       ],

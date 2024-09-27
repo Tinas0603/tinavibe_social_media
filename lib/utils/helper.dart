@@ -6,6 +6,7 @@ import 'package:flutter_tinavibe/utils/env.dart';
 import 'package:flutter_tinavibe/widgets/confirm_dialog.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 void showSnackBar(String title, String message) {
@@ -56,4 +57,27 @@ void confirmBox(String title, String text, VoidCallback callback) {
       callback: callback,
     ),
   );
+}
+
+// Định dạng ngày giờ cho múi giờ Việt Nam (UTC+7)
+String formatDateFromNow(String date) {
+  // Parse UTC timestamp string to DateTime
+  DateTime utcDateTime = DateTime.parse(date.split('+')[0].trim());
+  // Chuyển đổi từ UTC sang giờ Việt Nam (UTC+7)
+  DateTime vnDateTime = utcDateTime.add(const Duration(hours: 7));
+
+  final now = DateTime.now();
+  final difference = now.difference(vnDateTime);
+
+  if (difference.inSeconds < 60) {
+    return 'Vài giây trước';
+  } else if (difference.inMinutes < 60) {
+    return '${difference.inMinutes} phút trước';
+  } else if (difference.inHours < 24) {
+    return '${difference.inHours} giờ trước';
+  } else if (difference.inDays < 7) {
+    return '${difference.inDays} ngày trước';
+  } else {
+    return DateFormat('dd/MM/yyyy').format(vnDateTime);
+  }
 }

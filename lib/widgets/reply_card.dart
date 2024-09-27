@@ -34,7 +34,6 @@ class ReplyCard extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Điều hướng đến ShowPost với postId của bình luận
                           Get.toNamed(RouteNames.showPost,
                               arguments: reply.postId);
                         },

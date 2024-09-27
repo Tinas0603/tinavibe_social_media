@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_tinavibe/controllers/notification_controller.dart';
+import 'package:flutter_tinavibe/routes/route_names.dart';
 import 'package:flutter_tinavibe/services/navigation_service.dart';
 import 'package:flutter_tinavibe/services/supabase_service.dart';
 import 'package:flutter_tinavibe/utils/helper.dart';
@@ -46,6 +47,11 @@ class _NotificationsState extends State<Notifications> {
                         physics: const BouncingScrollPhysics(),
                         itemCount: controller.notifications.length,
                         itemBuilder: (context, index) => ListTile(
+                          onTap: () {
+                            Get.toNamed(RouteNames.showPost,
+                                arguments:
+                                    controller.notifications[index]!.postId!);
+                          },
                           titleAlignment: ListTileTitleAlignment.top,
                           isThreeLine: true,
                           leading: ImageCircle(

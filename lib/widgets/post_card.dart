@@ -13,56 +13,52 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Column(
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: context.width * 0.12,
-                  child: ImageCircle(
-                    url: post.user?.metadata?.image,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                SizedBox(
-                  width: context.width * 0.80,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      PostTopBar(post: post),
-                      GestureDetector(
-                        onTap: () {
-                          Get.toNamed(RouteNames.comments, arguments: post);
-                        },
-                        child: Text(post.content!),
-                      ),
-                      const SizedBox(height: 10),
-                      if (post.image != null)
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed(RouteNames.comments, arguments: post);
-                          },
-                          child: PostCardImage(
-                            url: post.image!,
-                          ),
-                        ),
-                      PostBottomBar(post: post),
-                    ],
-                  ),
-                ),
-              ],
+            SizedBox(
+              width: context.width * 0.12,
+              child: Column(
+                children: [
+                  ImageCircle(url: post.user?.metadata?.image),
+                ],
+              ),
             ),
-            const Divider(
-              color: Color(0xff242424),
+            const SizedBox(width: 10),
+            SizedBox(
+              width: context.width * 0.80,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PostTopBar(
+                    post: post,
+                  ),
+                  GestureDetector(
+                    onTap: () =>
+                        Get.toNamed(RouteNames.showPost, arguments: post.id),
+                    child: Text(post.content!),
+                  ),
+                  //Hiển thị ảnh nếu tồn tại
+                  const SizedBox(height: 10),
+                  if (post.image != null)
+                    GestureDetector(
+                        onTap: () {
+                          Get.toNamed(RouteNames.showImage,
+                              arguments: post.image!);
+                        },
+                        child: PostCardImage(url: post.image!)),
+                  PostBottomBar(post: post),
+                ],
+              ),
             )
           ],
         ),
-      ),
+        const Divider(
+          color: Color(0xff242424),
+        )
+      ],
     );
   }
 }

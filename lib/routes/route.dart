@@ -2,9 +2,10 @@ import 'package:flutter_tinavibe/routes/route_names.dart';
 import 'package:flutter_tinavibe/views/auth/login.dart';
 import 'package:flutter_tinavibe/views/auth/register.dart';
 import 'package:flutter_tinavibe/views/home.dart';
+import 'package:flutter_tinavibe/views/posts/show_post.dart';
+import 'package:flutter_tinavibe/views/posts/show_zoom_image.dart';
 import 'package:flutter_tinavibe/views/profile/edit_profile.dart';
 import 'package:flutter_tinavibe/views/replies/add_reply.dart';
-import 'package:flutter_tinavibe/views/replies/comment_page.dart';
 import 'package:flutter_tinavibe/views/settings/setting.dart';
 import 'package:get/route_manager.dart';
 
@@ -35,9 +36,14 @@ class Routes {
       transition: Transition.downToUp,
     ),
     GetPage(
-      name: RouteNames.comments,
-      page: () => CommentsPage(post: Get.arguments),
-      transition: Transition.fadeIn,
+      name: RouteNames.showPost,
+      page: () => const ShowPost(),
+      transition: Transition.leftToRight,
+    ),
+    GetPage(
+      name: RouteNames.showImage,
+      page: () => ShowZoomImage(),
+      transition: Transition.leftToRight,
     ),
   ];
 }

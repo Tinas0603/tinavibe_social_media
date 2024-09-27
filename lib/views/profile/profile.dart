@@ -4,7 +4,10 @@ import 'package:flutter_tinavibe/controllers/profile_controller.dart';
 import 'package:flutter_tinavibe/routes/route_names.dart';
 import 'package:flutter_tinavibe/services/supabase_service.dart';
 import 'package:flutter_tinavibe/utils/styles/button_styles.dart';
+import 'package:flutter_tinavibe/widgets/reply_card.dart';
 import 'package:flutter_tinavibe/widgets/image_circle.dart';
+import 'package:flutter_tinavibe/widgets/loading.dart';
+import 'package:flutter_tinavibe/widgets/post_card.dart';
 import 'package:get/get.dart';
 
 class Profile extends StatefulWidget {
@@ -18,6 +21,15 @@ class _ProfileState extends State<Profile> {
   final ProfileController controller = Get.put(ProfileController());
 
   final SupabaseService supabaseService = Get.find<SupabaseService>();
+
+  @override
+  void initState() {
+    if (supabaseService.currentUser.value?.id != null) {
+      controller.fetchUserPosts(supabaseService.currentUser.value!.id);
+      controller.fetchReplies(supabaseService.currentUser.value!.id);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +138,7 @@ class _ProfileState extends State<Profile> {
                         text: "Bài viết",
                       ),
                       Tab(
-                        text: "Phản hồi",
+                        text: "Bình luận",
                       ),
                     ],
                   ),
@@ -136,8 +148,52 @@ class _ProfileState extends State<Profile> {
           },
           body: TabBarView(
             children: [
-              Text("I am posts"),
-              Text("I am replies"),
+              Obx(
+                () => SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      if (controller.postLoading.value)
+                        const Loading()
+                      else if (controller.posts.isNotEmpty)
+                        ListView.builder(
+                          itemCount: controller.posts.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) => PostCard(
+                            post: controller.posts[index],
+                          ),
+                        )
+                      else
+                        const Center(
+                          child: Text("Không có bài viết nào!"),
+                        )
+                    ],
+                  ),
+                ),
+              ),
+              Obx(() => SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        if (controller.replyLoading.value)
+                          const Loading()
+                        else if (controller.replies.isNotEmpty)
+                          ListView.builder(
+                            itemCount: controller.replies.length,
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) =>
+                                ReplyCard(reply: controller.replies[index]),
+                          )
+                        else
+                          const Center(
+                            child: Text("Không có phản hồi nào!"),
+                          )
+                      ],
+                    ),
+                  ))
             ],
           ),
         ),

@@ -26,6 +26,5 @@ class ReplyCardTopBar extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 }

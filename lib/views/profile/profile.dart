@@ -189,7 +189,7 @@ class _ProfileState extends State<Profile> {
                           )
                         else
                           const Center(
-                            child: Text("Không có phản hồi nào!"),
+                            child: Text("Không có bình luận nào!"),
                           )
                       ],
                     ),

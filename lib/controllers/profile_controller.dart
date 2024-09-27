@@ -87,8 +87,8 @@ class ProfileController extends GetxController {
       replyLoading.value = true;
       final List<dynamic> response =
           await SupabaseService.client.from("comments").select('''
-        id , user_id , post_id ,reply ,created_at ,user:user_id (email , metadata)
-''').eq("user_id", userId).order("id", ascending: false);
+        id, user_id, post_id, reply, created_at, user: user_id (email, metadata)
+        ''').eq("user_id", userId).order("id", ascending: false);
       replyLoading.value = false;
       if (response.isNotEmpty) {
         replies.value = [for (var item in response) ReplyModel.fromJson(item)];

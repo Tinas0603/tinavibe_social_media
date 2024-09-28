@@ -113,4 +113,34 @@ class PostController extends GetxController {
       showSnackBar("Lỗi", "Vui lòng thử lại sau");
     }
   }
+
+  // Like và dislike
+  Future<void> likeDislike(
+      String status, int postId, String postUserId, String userId) async {
+    if (status == "1") {
+      await SupabaseService.client
+          .from("likes")
+          .insert({"user_id": userId, "post_id": postId});
+
+      //thêm thông báo
+      await SupabaseService.client.from("notifications").insert({
+        "user_id": userId,
+        "notification": "Đã thích bài viết của bạn.",
+        "to_user_id": postUserId,
+        "post_id": postId,
+      });
+      //Tăng biến like_count
+      await SupabaseService.client
+          .rpc("like_increment", params: {"count": 1, "row_id": postId});
+    } else {
+      await SupabaseService.client
+          .from("likes")
+          .delete()
+          .match({"user_id": userId, "post_id": postId});
+
+      //Giảm biến like_count
+      await SupabaseService.client
+          .rpc("like_decrement", params: {"count": 1, "row_id": postId});
+    }
+  }
 }

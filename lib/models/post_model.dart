@@ -1,3 +1,4 @@
+import 'package:flutter_tinavibe/models/like_model.dart';
 import 'package:flutter_tinavibe/models/user_model.dart';
 
 class PostModel {
@@ -9,6 +10,7 @@ class PostModel {
   int? commentCount;
   String? createdAt;
   UserModel? user;
+  List<LikeModel>? likes;
 
   PostModel({
     this.id,
@@ -19,6 +21,7 @@ class PostModel {
     this.likeCount,
     this.commentCount,
     this.userId,
+    this.likes,
   });
 
   PostModel.fromJson(Map<String, dynamic> json) {
@@ -30,6 +33,12 @@ class PostModel {
     image = json['image'];
     createdAt = json['created_at'];
     user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
+    if (json['likes'] != null) {
+      likes = <LikeModel>[];
+      json['likes'].forEach((v) {
+        likes!.add(LikeModel.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {

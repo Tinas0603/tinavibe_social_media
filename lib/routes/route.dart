@@ -5,6 +5,7 @@ import 'package:flutter_tinavibe/views/home.dart';
 import 'package:flutter_tinavibe/views/posts/show_post.dart';
 import 'package:flutter_tinavibe/views/posts/show_zoom_image.dart';
 import 'package:flutter_tinavibe/views/profile/edit_profile.dart';
+import 'package:flutter_tinavibe/views/profile/show_user.dart';
 import 'package:flutter_tinavibe/views/replies/add_reply.dart';
 import 'package:flutter_tinavibe/views/settings/setting.dart';
 import 'package:get/route_manager.dart';
@@ -43,6 +44,11 @@ class Routes {
     GetPage(
       name: RouteNames.showImage,
       page: () => ShowZoomImage(),
+      transition: Transition.leftToRight,
+    ),
+    GetPage(
+      name: RouteNames.showUser,
+      page: () => const ShowUser(),
       transition: Transition.leftToRight,
     ),
   ];

@@ -7,4 +7,5 @@ class RouteNames {
   static String addReply = "/addReply";
   static String showPost = "/showPost";
   static String showImage = "/showImage";
+  static String showUser = "/showUser";
 }

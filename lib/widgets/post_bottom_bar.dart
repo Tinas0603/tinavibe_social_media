@@ -29,6 +29,14 @@ class _PostBottomBarState extends State<PostBottomBar> {
         supabaseService.currentUser.value!.id);
   }
 
+  // void likeDislike(String status) async {
+  //   // Kiểm tra nếu id hoặc userId của post bị null
+  //   if (widget.post.id == null ||
+  //       widget.post.userId == null ||
+  //       supabaseService.currentUser.value?.id == null) {
+  //     print('Post ID hoặc User ID hoặc Current User ID bị null');
+  //     return;
+  //   }
   @override
   Widget build(BuildContext context) {
     return Column(

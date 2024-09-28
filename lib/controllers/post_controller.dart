@@ -82,9 +82,13 @@ class PostController extends GetxController {
       post.value = PostModel();
       replies.value = [];
       showPostLoading.value = true;
-      final response = await SupabaseService.client.from("posts").select('''
+      final response = await SupabaseService.client
+          .from("posts")
+          .select('''
     id ,content , image ,created_at ,comment_count , like_count,user_id,
-    user:user_id (email , metadata)''').eq("id", postId).single();
+    user:user_id (email , metadata) , likes:likes (user_id ,post_id)''')
+          .eq("id", postId)
+          .single();
       showPostLoading.value = false;
       post.value = PostModel.fromJson(response);
 

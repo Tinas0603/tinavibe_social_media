@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tinavibe/models/user_model.dart';
 import 'package:flutter_tinavibe/routes/route_names.dart';
-import 'package:flutter_tinavibe/utils/helper.dart';
 import 'package:flutter_tinavibe/utils/styles/button_styles.dart';
 import 'package:flutter_tinavibe/widgets/image_circle.dart';
 import 'package:get/get.dart';
@@ -21,7 +20,7 @@ class UserTile extends StatelessWidget {
       titleAlignment: ListTileTitleAlignment.center,
       trailing: OutlinedButton(
         onPressed: () {
-          //Get.toNamed(RouteNames.showProfile, arguments: user.id!);
+          Get.toNamed(RouteNames.showUser, arguments: user.id!);
         },
         style: customOutlineStyle(),
         child: const Text("Xem hồ sơ"),

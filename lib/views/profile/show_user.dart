@@ -1,71 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tinavibe/controllers/profile_controller.dart';
 import 'package:flutter_tinavibe/routes/route_names.dart';
-import 'package:flutter_tinavibe/services/supabase_service.dart';
-import 'package:flutter_tinavibe/utils/styles/button_styles.dart';
-import 'package:flutter_tinavibe/widgets/reply_card.dart';
+import 'package:flutter_tinavibe/views/profile/profile.dart';
 import 'package:flutter_tinavibe/widgets/image_circle.dart';
 import 'package:flutter_tinavibe/widgets/loading.dart';
 import 'package:flutter_tinavibe/widgets/post_card.dart';
+import 'package:flutter_tinavibe/widgets/reply_card.dart';
 import 'package:get/get.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class ShowUser extends StatefulWidget {
+  const ShowUser({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ShowUser> createState() => _ShowUserState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ShowUserState extends State<ShowUser> {
+  final String userId = Get.arguments;
   final ProfileController controller = Get.put(ProfileController());
-
-  final SupabaseService supabaseService = Get.find<SupabaseService>();
 
   @override
   void initState() {
+    controller.fetchUser(userId);
     super.initState();
-    _refreshProfileData(); // Load initial data
-  }
-
-  // Function to refresh both posts and replies
-  Future<void> _refreshProfileData() async {
-    if (supabaseService.currentUser.value?.id != null) {
-      // Clear the existing posts and replies
-      controller.posts.clear();
-      controller.replies.clear();
-
-      // Fetch the new data
-      controller.fetchUserPosts(supabaseService.currentUser.value!.id);
-      controller.fetchReplies(supabaseService.currentUser.value!.id);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Icon(Icons.language),
-        centerTitle: false,
-        actions: [
-          // Button to refresh posts and replies
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _refreshProfileData, // Trigger refresh when pressed
-          ),
-          IconButton(
-            onPressed: () => Get.toNamed(RouteNames.setting),
-            icon: const Icon(Icons.sort),
-          )
-        ],
-      ),
+          title: const Icon(Icons.language),
+          centerTitle: false,
+          actions: [
+            IconButton(
+                onPressed: () => Get.toNamed(RouteNames.setting),
+                icon: const Icon(Icons.sort))
+          ]),
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                expandedHeight: 160,
-                collapsedHeight: 160,
+                expandedHeight: 100,
+                collapsedHeight: 100,
                 automaticallyImplyLeading: false,
                 flexibleSpace: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -78,27 +56,21 @@ class _ProfileState extends State<Profile> {
                             () => Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  supabaseService
-                                      .currentUser.value!.userMetadata?["name"],
-                                  style: const TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
+                                if (controller.userLoading.value)
+                                  const Loading()
+                                else
+                                  Text(
+                                    controller.user.value!.metadata!.name!,
+                                    style: const TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
                                 SizedBox(
                                   width: context.width * 0.65,
                                   child: Text(
-                                    (supabaseService.currentUser.value
-                                                        ?.userMetadata?[
-                                                    "description"] ??
-                                                "")
-                                            .trim()
-                                            .isEmpty
-                                        ? "Thêm tiểu sử"
-                                        : supabaseService.currentUser.value
-                                            ?.userMetadata?["description"]!,
-                                  ),
+                                      controller.user.value?.metadata?.name ??
+                                          "Thêm tiểu sử"),
                                 )
                               ],
                             ),
@@ -106,8 +78,7 @@ class _ProfileState extends State<Profile> {
                           Obx(
                             () => ImageCircle(
                               file: controller.image.value,
-                              url: supabaseService
-                                  .currentUser.value?.userMetadata?["image"],
+                              url: controller.user.value?.metadata?.image,
                               radius: 40,
                             ),
                           )
@@ -115,29 +86,6 @@ class _ProfileState extends State<Profile> {
                       ),
                       const SizedBox(
                         height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () {
-                                Get.toNamed(RouteNames.editProfile);
-                              },
-                              style: customOutlineStyle(),
-                              child: const Text("Sửa hồ sơ"),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              style: customOutlineStyle(),
-                              child: const Text("Chia sẻ hồ sơ"),
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
@@ -179,8 +127,6 @@ class _ProfileState extends State<Profile> {
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) => PostCard(
                             post: controller.posts[index],
-                            isAuthCard: true,
-                            callback: controller.deletePost,
                           ),
                         )
                       else
@@ -202,11 +148,8 @@ class _ProfileState extends State<Profile> {
                             itemCount: controller.replies.length,
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
-                            itemBuilder: (context, index) => ReplyCard(
-                              reply: controller.replies[index],
-                              isAuthCard: true,
-                              callback: controller.deleteReply,
-                            ),
+                            itemBuilder: (context, index) =>
+                                ReplyCard(reply: controller.replies[index]),
                           )
                         else
                           const Center(
@@ -220,30 +163,5 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
-  }
-}
-
-class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar _tabBar;
-  SliverAppBarDelegate(this._tabBar);
-
-  @override
-  double get maxExtent => _tabBar.preferredSize.height;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Colors.black,
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
   }
 }

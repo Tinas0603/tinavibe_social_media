@@ -53,6 +53,9 @@ class PostModel {
     if (user != null) {
       data['user'] = user!.toJson();
     }
+    if (likes != null) {
+      data['likes'] = likes!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

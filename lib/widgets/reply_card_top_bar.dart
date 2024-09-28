@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tinavibe/models/reply_model.dart';
 import 'package:flutter_tinavibe/utils/helper.dart';
+import 'package:flutter_tinavibe/utils/type_def.dart';
 
 class ReplyCardTopBar extends StatelessWidget {
   final ReplyModel reply;
-  const ReplyCardTopBar({required this.reply, super.key});
+  final bool isAuthCard;
+  final DeleteCallback? callback;
+  const ReplyCardTopBar(
+      {required this.reply, this.isAuthCard = false, this.callback, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +21,23 @@ class ReplyCardTopBar extends StatelessWidget {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(formatDateFromNow(reply.createdAt!)),
-            const SizedBox(width: 10),
-            const Icon(Icons.more_horiz),
+            isAuthCard
+                ? GestureDetector(
+                    onTap: () {
+                      confirmBox("Bạn có chắc không?",
+                          "Sau khi xoá sẽ không thể hoàn tác.", () {
+                        callback!(reply.id!);
+                      });
+                    },
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                  )
+                : const Icon(Icons.more_horiz),
           ],
         ),
       ],

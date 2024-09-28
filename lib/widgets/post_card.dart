@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tinavibe/models/post_model.dart';
 import 'package:flutter_tinavibe/routes/route_names.dart';
+import 'package:flutter_tinavibe/utils/type_def.dart';
 import 'package:flutter_tinavibe/widgets/image_circle.dart';
 import 'package:flutter_tinavibe/widgets/post_bottom_bar.dart';
 import 'package:flutter_tinavibe/widgets/post_card_image.dart';
@@ -9,7 +10,14 @@ import 'package:get/get.dart';
 
 class PostCard extends StatelessWidget {
   final PostModel post;
-  const PostCard({required this.post, super.key});
+  final bool isAuthCard;
+  final DeleteCallback? callback;
+  const PostCard({
+    required this.post,
+    this.isAuthCard = false,
+    this.callback,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +42,8 @@ class PostCard extends StatelessWidget {
                 children: [
                   PostTopBar(
                     post: post,
+                    isAuthCard: isAuthCard,
+                    callback: callback,
                   ),
                   GestureDetector(
                     onTap: () =>
